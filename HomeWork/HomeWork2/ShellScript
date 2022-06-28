@@ -1,0 +1,36 @@
+#!/bin/bash
+
+check() {
+  for num in 1 2 3 4 5
+  do
+    if [ "$1" = "$num" ]
+    then
+      echo "This is $num"
+      return 0
+    else
+      echo "This is NOT $num"
+    fi
+  done
+  
+  return 1
+}
+
+echo "Original parameters are $*"
+echo "Your first number is $1"
+echo "now enter a number again"
+read n
+while true
+do
+  if check "$n" 
+  then
+    echo "easy!I'm goot at mathmatics"
+    echo "try another number"
+  else
+    echo "TOO BIG!!!"
+    echo "That's a bad number.I can not do the conut."
+    exit 1
+  fi
+  read n
+done
+
+exit 0
