@@ -23,7 +23,7 @@ while true
 do
   if check "$n" 
   then
-    echo "easy!I'm goot at mathmatics"
+    echo "easy!I'm good at mathmatics"
     echo "try another number"
   else
     echo "TOO BIG!!!"

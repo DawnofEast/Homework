@@ -1,0 +1,263 @@
+\documentclass[UTF8]{article}
+
+\usepackage[UTF8]{ctex}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{Shell脚本的介绍和编写}
+
+\author{鲁衍坤 \\ 信计2101 3210105173}
+\date{June 28, 2022}
+
+\begin{document}
+
+\maketitle
+
+某位大佬曾经说过，Shell归愚蠢的人类使用。但是，Shell实际上功能相当便捷，甚至可以在Shell里写代码，更确切地说，脚本。本文旨在分享笔者最近所学习到的Shell脚本的基础知识和一点点实际应用。话不多说，直接进入正题。
+
+\section{预备知识与测试}
+
+\begin{verbatim}
+$ ./test abc
+\end{verbatim}
+
+这是一句十分简单的Shell命令，其作用是运行当前目录下的test文件（如果它可以运行的话）。
+（获取运行该文件的权限也很简单，只需要一句\verb|$ chmod a+x test|即可。）
+
+不过，我们发现命令可以不单单只有命令，我们可以为即将要执行的文件传入一些参数，具体来说，就是上述命令中的不明意义字符串\verb|abc|。
+
+并且，Shell自带的一些命令，如\verb|read|或者\verb|echo|等，都是支持输入输出等操作的。除此之外，Shell也允许自己创建变量，这些都给了我们使用Shell命令编写脚本的可能。
+
+\textbf{这一章节接下来的shell脚本内容均写与该pdf文件同时上交的文件ShellCode一致，并且测试结果均出自于ShellCode文件的测试结果。}
+
+\subsection{环境变量}
+
+当Shell脚本启动时，一些变量会根据配置环境进行初始化。这些变量通常都是大写的，以区别于脚本中的用户定义变量。创建的变量取决于电脑上的个人配置。一些基础的环境变量如下表所示：
+
+\begin{tabular}{|l|p{18em}|}
+  \hline
+  环境变量 & 描述\\
+  \cline{1-2}
+  \$HOME & 用户主要文件夹（home）的地址。\\
+  \$PATH & 用于搜索命令的以冒号分割的地址。\\
+  \$PS1 & 命令提示符，通常为\$，但在bash中可以使用更复杂的值；例如，字符串\verb|[\u@\h\W]$|是常用默认值，告诉您用户、计算机名称和当前目录，并提供\$提示。\\
+  \$PS2 & 辅助提示，用于添加其他输入；通常为>。\\
+  \$IFS & 输入字段分隔符。用于shell读取输入时，通常是space、tab和换行符。\\
+  \$0 & Shell脚本的名称。\\
+  \$\# & 传递的参数数量。\\
+  \$\$ & Shell脚本的进程ID。\\
+  \hline
+\end{tabular}
+
+这些环境变量都是脚本中随时可以调用的常数。利用它们能做到许多操作。
+
+\subsection{输入、输出}
+
+先看一段简单的脚本代码：
+
+\begin{verbatim}
+echo "Please enter a new greeting"
+read salutation
+echo $salutation
+\end{verbatim}
+
+它们运行的结果是
+
+\begin{tabular}{|l|}
+  \hline
+Please enter a new greeting\\
+\textbf{helloworld}\\
+helloworld\\
+\hline
+\end{tabular}
+
+所以，echo在shell中有输出的功能，而read则可以读入一个字符串。需要注意的是，echo输出后会自动换行，而read读入的字符串也只读到空格为止。
+
+当然，shell也支持自动创建变量，也就是脚本中的\verb|salutation|（通常为字符串）。
+
+\subsection{条件、循环}
+
+要想完成相对而言更加复杂和更加实际的问题，条件结构和循环结构必不可少。当然，shell脚本支持这些操作。
+
+首先是条件结构：
+
+\begin{verbatim}
+echo "plz input a sentence"
+read str
+if [ $str = "GenShin" ]
+then
+   echo "woc!yuan!"
+elif [ "$str" = "Arknight" ]
+then
+   echo "woc!zhou!"
+else
+   echo "not erciyuan gamer"
+   exit 1
+fi
+\end{verbatim}
+
+分别运行三次，不同的输入对应的结果是
+
+\begin{tabular}{|l|}
+  \hline
+\textbf{GenShin}\\
+woc!yuan!\\
+\\
+\textbf{Arknight}\\
+woc!zhou!\\
+\\
+\textbf{Terraria}\\
+not erciyuan gamer\\
+\hline
+\end{tabular}
+
+这样的条件语句与python中的判断语句写法类似，用\verb|then-fi|代替了大括号。
+
+需要注意的是，\verb|$str|和\verb|"$str"|在判断时并无影响，加双引号只是为了统一格式。
+
+然后是循环结构：
+
+\begin{verbatim}
+for foo in bar fud 43
+do
+   echo $foo
+done
+\end{verbatim}
+
+运行的结果是
+
+\begin{tabular}{|l|}
+  \hline
+bar\\
+fud\\
+43\\
+\hline
+\end{tabular}
+
+当然，也有while形式的写法：
+\begin{verbatim}
+echo "Enter My Username"
+read trythis
+while [ "$trythis" != "FallCloud" ]
+do
+   echo "Sorry, try again"
+   read trythis
+done
+\end{verbatim}
+
+运行的结果是
+
+\begin{tabular}{|l|}
+  \hline
+Enter My Username\\
+\textbf{idiot}\\
+Sorry, try again\\
+\textbf{noob}\\
+Sorry,try again\\
+\textbf{FallCloud}\\
+\hline
+\end{tabular}
+
+两种循环结构的写法也都和python类似（但是正经人谁学python）。
+
+\subsection{函数}
+
+是的，在Shell里，你甚至可以写一个脚本函数。
+
+就像这样：
+
+\begin{verbatim}
+foo() {
+   echo "Function foo is executing"
+}
+echo "script starting"
+foo
+echo "script ended"
+\end{verbatim}
+
+运行结果如下：
+
+\begin{tabular}{|l|}
+\hline
+  script starting\\
+Function foo is executing\\
+script ended\\
+\hline
+\end{tabular}
+
+当然，函数也可以有返回值。不过需要注意的是，\verb|return 0|代表返回\verb|true|，而\verb|return 1|代表返回\verb|false|。笔者很疑惑这样设置的理由（恼
+
+  \section{编写脚本与结果}
+  
+既然shell支持这么多功能，我就用粗浅的理解写下了一个功能简单的脚本。\textbf{读者应当可以在与本文本相同目录下找到一个名为ShellScript的文件}，这个文件即为这里所指的脚本。
+
+其源码如下：
+\begin{verbatim}
+#!/bin/bash
+
+check() {
+  for num in 1 2 3 4 5
+  do
+    if [ "$1" = "$num" ]
+    then
+      echo "This is $num"
+      return 0
+    else
+      echo "This is NOT $num"
+    fi
+  done
+  
+  return 1
+}
+
+echo "Original parameters are $*"
+echo "Your first number is $1"
+echo "now enter a number again"
+read n
+while true
+do
+  if check "$n" 
+  then
+    echo "easy!I'm good at mathmatics"
+    echo "try another number"
+  else
+    echo "TOO BIG!!!"
+    echo "That's a bad number.I can not do the conut."
+    exit 1
+  fi
+  read n
+done
+
+exit 0
+\end{verbatim}
+
+该代码的作用为：首先获取命令后全部的参数序列和命令后的第一个参数并输出，然后要求用户输入数字，如果输入的内容是1、2、3、4、5的其中一个，那么就会从一开始数到输入的数字。如果输入的是其他内容，则输出错误信息然后退出。
+
+测试结果如下：
+
+\begin{tabular}{|l|}
+  \hline
+\textbf{./ShellScript 7 8 9}\\
+Original parameters are 7 8 9\\
+Your first number is 7\\
+now enter a number again\\
+\textbf{3}\\
+This is NOT 1\\
+This is NOT 2\\
+This is 3\\
+easy!I'm good at mathmatics\\
+try another number\\
+\textbf{0x3f}\\
+This is NOT 1\\
+This is NOT 2\\
+This is NOT 3\\
+This is NOT 4\\
+This is NOT 5\\
+TOO BIG!!!\\
+That's a bad number.I can not do the count.\\
+\hline
+\end{tabular}
+
+这个代码中使用到了上文所介绍到的所有功能。当然，Shell所能做到的操作远不止于此，本文只做简单分享。
+
+\end{document}
