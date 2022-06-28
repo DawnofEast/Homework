@@ -1,0 +1,47 @@
+#!/bin/bash
+
+if [ -f /bin/bash ]
+then
+   echo "file /bin/bash exists"
+fi
+if [ -d /bin/bash ]
+then
+   echo "/bin/bash is a directory"
+else
+   echo "/bin/bash is NOT a directory"
+fi
+
+echo "plz input a sentence"
+read str
+if [ $str = "GenShin" ]
+then
+   echo "woc!yuan!"
+elif [ "$str" = "Arknight" ]
+then
+   echo "woc!zhou!"
+else
+   echo "not erciyuan gamer"
+   exit 1
+fi
+
+for foo in bar fud 43
+do
+   echo $foo
+done
+
+echo "Enter My Username"
+read trythis
+while [ "$trythis" != "FallCloud" ]
+do
+   echo "Sorry, try again"
+   read trythis
+done
+
+foo() {
+   echo "Function foo is executing"
+}
+echo "script starting"
+foo
+echo "script ended"
+
+exit 0
