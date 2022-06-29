@@ -1,0 +1,103 @@
+\documentclass[UTF8]{article}
+
+\usepackage[UTF8]{ctex}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{我的Linux工作环境介绍}
+
+\author{鲁衍坤 \\ 信计2101 3210105173}
+\date{June 29, 2022}
+
+\begin{document}
+
+\maketitle
+
+\section{Linux发行版信息}
+
+在shell中调用\verb|lsb_release -a|后，显示结果为：
+
+\begin{verbatim}
+Distributor ID:	Ubuntu
+Description:	Ubuntu 22.04 LTS
+Release:	22.04
+Codename:	jammy
+\end{verbatim}
+
+意味着本机发行版名称为Ubuntu 22.04 LTS，版本号为22.04。
+
+\section{个性化调整}
+
+\subsection{安装的软件}
+
+笔者安装的软件很少，主要为以下所列：
+
+\begin{itemize}
+\item 浏览器FireFox
+\item 文本编辑器emacs
+\item c和c++语言的编译器gcc和g++
+\item 文档阅读器okular
+\item 代码管理系统git
+\end{itemize}
+
+\subsection{额外配置}
+
+笔者同时对本机做了一些额外配置，具体如下：
+
+将本地文本的标准格式改为UTF-8，以便于使用中文和其他文字。\\
+并且在用户目录下的 .bash 文件中添加了\verb|alias emacs='LC_CTYPE=zh_CN.utf-8 emacs'|来保证emacs运行时也使用UTF-8的文本格式。
+
+笔者的机器同样修改了emacs的配置文件.emacs，具体配置如下：
+
+\begin{verbatim}
+(global-font-lock-mode t)
+(shown-paren-mode t)
+
+'(colum-number-mode t)
+'(display-time-mode t)
+
+(global-set-key(kbd "TAB") 'self-insert-command)
+(setqdefault-tab-width 4)
+(setqbackward-delete-char-untabify-method nil)
+(defunmy-c-mode-hook ()
+  (setq c-basic-offset 4
+        c-indent-level 4
+        c-default-style "bsd"))
+(add-hook'c-mode-common-hook 'my-c-mode-hook)
+\end{verbatim}
+
+它们的作用为：
+
+\begin{itemize}
+  \item 语法高亮
+  \item 括号匹配高亮
+  \item 显示行数
+  \item 显示时间
+  \item 将键盘键入的“Tab”改为输入4个空格
+  \begin{itemize}
+    \item 这项修改不会将Tab键入的结果直接替换为四个空格，只是显示如此
+    \item 这项修改还支持了Tab键入的空白内容只需要一次delete即可删除（而非4次）
+    \item c语言的智能缩进没有受到影响，也不会影响这项修改
+  \end{itemize}
+\end{itemize}
+
+\subsection{下一步的工作}
+
+\subsubsection{使用场合}
+
+笔者是一名苦比大一生，所以接下来的大二秋冬学期所将要修读的课程《数据结构与算法》中应该会用到Linux环境。尤其是编写高级数据结构处理大数据时（如对$10^5$个数建立可持久化线段树），需要一个高效的运算环境，而Linux很适合做这样的工作。\\
+并且，在今后练习和使用c语言（或c++）时很有可能继续使用Linux系统，因为这个系统相比于windows系统更加高效且不易受影响。
+
+\subsubsection{未来需求}
+
+笔者认为本机的配置已经可以满足未来的学习需求（至少在大二这一年内如此）：能够写代码/写文章/浏览网页，并且管理和修改都相当高效。
+
+\subsection{保证文件安全}
+
+首先，我在本地建立了一个git仓库用于管理我所写的文件。
+
+比如笔者写下这句话时我的本地git仓库的状态是这样的：
+
+
+
+\end{document}
