@@ -9,13 +9,15 @@
 \author{鲁衍坤 \\ 信计2101 3210105173}
 \date{June 29, 2022}
 
+\bibliographystyle{plain}
+
 \begin{document}
 
 \maketitle
 
 \section{Linux发行版信息}
 
-在shell中调用\verb|lsb_release -a|后，显示结果为：
+在shell中调用\verb|lsb_release -a|后，显示结果为：\cite{ct1}
 
 \begin{verbatim}
 Distributor ID:	Ubuntu
@@ -98,6 +100,28 @@ Codename:	jammy
 
 比如笔者写下这句话时我的本地git仓库的状态是这样的：
 
+\begin{verbatim}
+$ git status
+位于分支 master
+您的分支领先 'origin/master' 共 1 个提交。
+  （使用 "git push" 来发布您的本地提交）
+$ git log
+commit 12ccff8a3f2345bd83f36f60e7b137f0bfe3429e (HEAD -> master)
+Author: FallCloud <214467369@qq.com>
+Date:   Wed Jun 29 13:37:49 2022 +0800
 
+    add homework3
+
+commit fa3abfebd4e639791b4f51db42dbb41bbd30fc1d (origin/master)
+Author: FallCloud <214467369@qq.com>
+Date:   Tue Jun 28 16:12:35 2022 +0800
+
+    complete second homework
+//只截取了最近两次修改
+\end{verbatim}
+
+同时，我也在github上建立了我的远程仓库。从上面的代码可以看到笔者写下这句话时远程仓库的版本是本次修改前的版本。
+
+\bibliography{quote}
 
 \end{document}
