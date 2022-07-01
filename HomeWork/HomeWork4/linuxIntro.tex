@@ -1,0 +1,106 @@
+\documentclass[UTF8]{article}
+
+\usepackage[UTF8]{ctex}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{subfigure}
+
+\title{Manderbrot Set 的生成和探索}
+
+\author{鲁衍坤 \\ 信计2101 3210105173}
+\date{June 30, 2022}
+
+\bibliographystyle{plain}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Mandelbrot集是一个由简单迭代所形成的分形图形。Mandelbrot教授于十九世纪七十年代发现了它，并且由此创立了分形几何。Mandelbrot集是由一个简单迭代算式所生成的图形，本文简要介绍了该图形如何用计算机生成。
+\end{abstract}
+
+\section{引言}
+分形几何学是20世纪70年代诞生的一门数学分支，它是继非欧几何创立之后几何学史上的又一次重大革命。作为大自然的几何学,它在现实生活中有着非常广泛的应用。Mandelbrot通过统计性质建立了Mandelbrot集，将统计性融入自相似理论，描绘了统计自相似性，这在很大程度上推进了分形几何学的研究。尤其是它生成于一个简单的递归函数，迭代速度快、关系简单，这使得其在物理学上同样意义重大。
+
+\section{背景介绍}
+分形几何学是 20 世纪 70 年代中期，由美籍法裔数学家B.B.Mandelbrot创立的一门新的数学分支，曾被誉为是数学史上最令人吃惊的发现之一。经过数代数学家的研究，它的理论已经日趋成熟和完善。它的诞生是继非欧几何之后几何学史上的又一次革命，标志着人类对形的认识逐渐由规则形态进入不规则形态，为研究不规则点集和非线性现象提供了一种重要的数学方法和理论框架。分形几何是现代非线性科学理论的三大研究课题之一，它作为当今世界一门十分活跃的新学科，增长了人们的见识，改变了人们对世界的看法。\cite{CT_Mand2}
+
+Mandelbort集就是在这样的背景下诞生的。它的出现开创了数学中这个领域的先河，让原本好像“病态”的函数和曲线显得合理、将人们对自然数学的认识提高到了一个崭新的水平。在Mandelbort关于该曲线的相关论文中，首次将维数从整数域扩展至有理数域，实现了一步飞跃。后来他又在此基础上阐述了分形几何的基本内容、思想、理论和方法，并创造“分形”一词，标志着分形几何的诞生。
+
+\section{数学理论与算法}
+Mandelbort集是由简单的复迭代：
+
+\begin{equation}
+  Z \to Z^2 + C   (Z,C \in \mathbb{C})
+  \label{eq::con}
+\end{equation}
+
+所产生的。
+
+具体来说，Mandelbrot集是由迭代\ref{eq::con} ，取$Z_0 = 0$，变动$C$的值，使${Z_n}$的模长保持有界的$C$值集合 $M$。\cite{CT_Mand1} 即为：
+
+\begin{equation}
+  M = {C \in \mathbb{C} : P_c^k(Z) \nrightarrow \infty, k \to \infty}
+  \label{eq::man}
+\end{equation}
+
+那么其代码计算方式也很明了了。下面给出一个实现上述迭代的伪代码：
+
+\begin{verbatim}
+stopcriterion(complex C) :
+    complex Z = 0
+    while count < max_count :
+        count++
+        Z = Z * Z + C
+        if length(Z) > 2.0 :
+            return false
+    return true
+
+for j from 0 to height - 1 :  
+    for i from 0 to width - 1 :
+        if stopcriterion_(complex{i, j}) :
+            pic[i][j] = black
+        else :
+            pic[i][j] = white
+
+\end{verbatim}
+
+也就是说，在实际操作过程中生成一张位图将会较为便捷。本文中所带的图片均为bmp文件（一种位图）。
+
+现已证明Mandelbrot集是结构稳定的，这就意味着如果有一个由代数公式给出的函数族，它在某一区域内与多项式族 \ref{eq::con} 相似，那么不管它们有多复杂，则由该函数族产生的集合与标准族所定义的集有同样的形状。
+
+\section{数值算例}
+
+下图为Mandelbort集在点\verb|(0,0)|附近的图像。图2大体上展示了图像的全貌，而图\ref{1}是图\ref{2}放大5倍后的结果（图\ref{1}的维数为1,图\ref{2}的维数为5）。
+
+\begin{figure}[htbp]
+\centering
+\subfigure[放大后的图像]{
+\includegraphics[scale=0.08]{pic1.bmp} \label{1}
+}
+\quad
+\subfigure[完整的图像]{
+\includegraphics[scale=0.08]{pic2.bmp} \label{2}
+}
+\caption{Mandelbort集的图像}
+\end{figure}
+
+可以看到放大后的图像非常明显的表现出了分形图形的性质。由于式\ref{eq::man}的性质，图形是关于实数轴对称的。
+
+由于算力的影响和图片的精度有限，这里的两幅图像都只把迭代次数上限设置为了100。
+
+我们将中心点移至\verb|(-5,0)|，就得到了下面这张特征更加明显的图像：
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[scale=0.12]{pic3.bmp} \label{3}
+\caption{右移后的部分图像}
+\end{figure}
+
+这时，局部自相似性就非常明显的体现了出来。
+
+\bibliography{quote}
+
+\end{document}
