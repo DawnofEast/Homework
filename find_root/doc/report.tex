@@ -1,0 +1,41 @@
+\documentclass[UTF8]{article}
+
+\usepackage[UTF8]{ctex}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{subfigure}
+
+\title{roots.c功能简介}
+
+\author{鲁衍坤 \\ 信计2101 3210105173}
+\date{July 2, 2022}
+
+\bibliographystyle{plain}
+
+\begin{document}
+
+\maketitle
+
+本文是gsl自带的一个example源码功能的简介。源码文件为\verb|../src/roots.c|。
+
+其功能为：使用布伦特法(brent's method)求解$\sqrt{5}$的近似解，并输出中间过程。其输出如下所示：
+
+\begin{verbatim}
+using brent method
+ iter [    lower,     upper]      root        err  err(est)
+    1 [1.0000000, 5.0000000] 1.0000000 -1.2360680 4.0000000
+    2 [1.0000000, 3.0000000] 3.0000000 +0.7639320 2.0000000
+    3 [2.0000000, 3.0000000] 2.0000000 -0.2360680 1.0000000
+    4 [2.2000000, 3.0000000] 2.2000000 -0.0360680 0.8000000
+    5 [2.2000000, 2.2366300] 2.2366300 +0.0005621 0.0366300
+Converged:
+    6 [2.2360634, 2.2366300] 2.2360634 -0.0000046 0.0005666
+\end{verbatim}
+
+记录了迭代次数、下限、上限、近似解、近似解与实际解的差值、上下限的差值。
+其中第六次迭代达到了要求的精度，程序结束并输出最终近似解。
+
+\bibliography{quote}
+
+\end{document}
